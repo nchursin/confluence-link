@@ -54,7 +54,7 @@ export default class BaseClient {
 
 	async sendRequest(requestConfig: RequestConfig): Promise<any> {
 		const method = requestConfig.method;
-		const url = new URL(`/wiki/${requestConfig.url}`, this.config.host);
+		const url = new URL(`/${requestConfig.url}`, this.config.host);
 		let params = requestConfig.params;
 
 		if (!isArray(params)) {

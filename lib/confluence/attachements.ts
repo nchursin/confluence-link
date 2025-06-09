@@ -34,7 +34,7 @@ export default class Attachements {
 		const creds = Buffer.from(
 			`${clientConfig.authentication.email}:${clientConfig.authentication.apiToken}`,
 		).toString("base64");
-		const url = new URL(`/wiki/${requestConfig.url}`, clientConfig.host);
+		const url = new URL(`/${requestConfig.url}`, clientConfig.host);
 
 		const boundary = `----WebKitFormBoundary${Math.random()
 			.toString(36)
