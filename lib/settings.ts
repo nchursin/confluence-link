@@ -28,7 +28,7 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						this.plugin.settings.confluenceDomain = value;
 						await this.plugin.saveSettings();
-					})
+					}),
 			);
 
 		new Setting(containerEl)
@@ -39,7 +39,7 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 					async (value) => {
 						this.plugin.settings.atlassianUsername = value;
 						await this.plugin.saveSettings();
-					}
+					},
 				);
 			});
 
@@ -51,9 +51,9 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 						createEl("a", {
 							text: "Official documentation",
 							href: "https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/",
-						})
+						}),
 					);
-				})
+				}),
 			)
 			.addExtraButton((button) =>
 				button
@@ -62,11 +62,11 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 					.onClick(async () => {
 						if (this.plugin.settings.atlassianApiToken) {
 							await navigator.clipboard.writeText(
-								this.plugin.settings.atlassianApiToken
+								this.plugin.settings.atlassianApiToken,
 							);
 							new Notice("Token copied");
 						}
-					})
+					}),
 			)
 			.addExtraButton((button) =>
 				button
@@ -75,19 +75,19 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 						this.showToken = !this.showToken;
 						this.display();
 					})
-					.setTooltip(this.showToken ? "Hide token" : "Show token")
+					.setTooltip(this.showToken ? "Hide token" : "Show token"),
 			)
 			.addText((text) => {
 				text.setValue(this.plugin.settings.atlassianApiToken).onChange(
 					async (value) => {
 						this.plugin.settings.atlassianApiToken = value;
 						await this.plugin.saveSettings();
-					}
+					},
 				);
 
 				text.inputEl.setAttr(
 					"type",
-					this.showToken ? "text" : "password"
+					this.showToken ? "text" : "password",
 				);
 			});
 
@@ -129,7 +129,7 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 
 				button.setButtonText("Test Connection");
 				button.setDisabled(false);
-			})
+			}),
 		);
 
 		new Setting(containerEl)
@@ -146,13 +146,9 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 							confluenceDomain,
 						} = this.plugin.settings;
 
-						if (
-							!atlassianApiToken ||
-							!atlassianUsername ||
-							!confluenceDomain
-						) {
+						if (!atlassianApiToken || !confluenceDomain) {
 							new Notice(
-								"Please set up the above settings first"
+								"Please set up the above settings first",
 							);
 							return;
 						}
@@ -174,7 +170,7 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 								await this.plugin.saveSettings();
 
 								this.display(); // Reload the settings tab
-							}
+							},
 						).open();
 					});
 			})
@@ -182,7 +178,7 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 				let wait: number | null = null;
 
 				text.setValue(
-					this.plugin.settings.confluenceDefaultSpaceId
+					this.plugin.settings.confluenceDefaultSpaceId,
 				).onChange(async (value) => {
 					if (Number(value) && !isFloat(Number(value))) {
 						this.plugin.settings.confluenceDefaultSpaceId = value;
@@ -203,7 +199,7 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Follow links")
 			.setDesc(
-				"Enable to follow internal links and create those as confluence pages as well"
+				"Enable to follow internal links and create those as confluence pages as well",
 			)
 			.addToggle((cb) => {
 				cb.setValue(this.plugin.settings.followLinks || false);
@@ -217,7 +213,7 @@ export class ConfluenceLinkSettingsTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Upload tags")
 			.setDesc(
-				"Enable to add the tags from the obsidian file to the confluence page as well"
+				"Enable to add the tags from the obsidian file to the confluence page as well",
 			)
 			.addToggle((cb) => {
 				cb.setValue(this.plugin.settings.uploadTags || false);
