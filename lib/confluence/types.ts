@@ -31,6 +31,7 @@ export interface ObsidianRequestParams extends UrlConfig {
 
 export interface Client {
 	config: Config;
+	authHeader(): string;
 	sendRequest<T>(requestConfig: RequestConfig): T;
 }
 
@@ -82,7 +83,7 @@ export type PageResponse = {
 				number: number;
 				minorEdit: boolean;
 				authorId: string;
-			}
+			},
 		];
 		meta: { hasMore: boolean; cursor: string };
 		_links: { self: string };
@@ -118,7 +119,7 @@ export type GetPagesResponse = {
 				editui: string;
 				tinyui: string;
 			};
-		}
+		},
 	];
 	_links: { next: string; base: string };
 };
@@ -137,7 +138,7 @@ export type SpaceResponse = {
 			description: { plain: {}; view: {} };
 			icon: { path: string; apiDownloadLink: string };
 			_links: { webui: string };
-		}
+		},
 	];
 	_links: { next: string; base: string };
 };
@@ -303,7 +304,7 @@ export type SearchResponse = {
 								name: string;
 								id: string;
 								label: string;
-							}
+							},
 						];
 						size: number;
 					};
@@ -318,7 +319,7 @@ export type SearchResponse = {
 						};
 						anonymousAccess: boolean;
 						unlicensedAccess: boolean;
-					}
+					},
 				];
 				status: string;
 				settings: { routeOverrideEnabled: boolean; _links: {} };
@@ -394,7 +395,7 @@ export type SearchResponse = {
 			lastModified: string;
 			friendlyLastModified: string;
 			score: number;
-		}
+		},
 	];
 	start: number;
 	limit: number;

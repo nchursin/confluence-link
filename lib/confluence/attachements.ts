@@ -13,7 +13,7 @@ export default class Attachements {
 
 	async uploadFile(
 		pageId: string,
-		formData: FormData
+		formData: FormData,
 	): Promise<UploadResponse> {
 		formData.append("minorEdit", "true");
 
@@ -27,12 +27,12 @@ export default class Attachements {
 
 	async sendRequest(
 		requestConfig: RequestConfig,
-		formData: FormData
+		formData: FormData,
 	): Promise<any> {
 		const clientConfig = this.client.config;
 
 		const creds = Buffer.from(
-			`${clientConfig.authentication.email}:${clientConfig.authentication.apiToken}`
+			`${clientConfig.authentication.email}:${clientConfig.authentication.apiToken}`,
 		).toString("base64");
 		const url = new URL(`/wiki/${requestConfig.url}`, clientConfig.host);
 
@@ -48,7 +48,7 @@ export default class Attachements {
 		// Add file part
 		formDataParts.push(
 			`--${boundary}\r\n` +
-				`Content-Disposition: form-data; name="file"; filename="${file.name}"\r\n\r\n`
+				`Content-Disposition: form-data; name="file"; filename="${file.name}"\r\n\r\n`,
 			// `Content-Type: ${file.type}\r\n\r\n`
 		);
 		formDataParts.push(new Uint8Array(await file.arrayBuffer()));
@@ -58,14 +58,14 @@ export default class Attachements {
 		formDataParts.push(
 			`--${boundary}\r\n` +
 				`Content-Disposition: form-data; name="minorEdit"\r\n\r\n` +
-				`${formData.get("minorEdit")}\r\n`
+				`${formData.get("minorEdit")}\r\n`,
 		);
 
 		// Add comment part
 		formDataParts.push(
 			`--${boundary}\r\n` +
 				`Content-Disposition: form-data; name="comment"\r\n\r\n` +
-				`Content uploaded using Obsidian\r\n`
+				`Content uploaded using Obsidian\r\n`,
 		);
 
 		// End boundary
@@ -90,7 +90,7 @@ export default class Attachements {
 			headers: {
 				Accept: "application/json",
 				"User-Agent": "Obsidian.md",
-				Authorization: `Basic ${creds}`,
+				Authorization: this.client.authHeader(),
 				[this.ATLASSIAN_TOKEN_CHECK_FLAG]:
 					this.ATLASSIAN_TOKEN_CHECK_NOCHECK_VALUE,
 				"Content-Type": `multipart/form-data; boundary=${boundary}`,

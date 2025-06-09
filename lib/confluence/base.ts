@@ -29,8 +29,17 @@ export default class BaseClient {
 				}
 
 				return `${this.encode(key)}=${this.encode(value)}`;
-			})
+			}),
 		).join("&");
+	}
+
+	public authHeader(): string {
+		if (this.config.authentication.email) {
+			return `Basic ${Buffer.from(
+				`${this.config.authentication.email}:${this.config.authentication.apiToken}`,
+			).toString("base64")}`;
+		}
+		return `Bearer ${this.config.authentication.apiToken}`;
 	}
 
 	protected encode(value: string): string {
@@ -44,10 +53,6 @@ export default class BaseClient {
 	}
 
 	async sendRequest(requestConfig: RequestConfig): Promise<any> {
-		const creds = Buffer.from(
-			`${this.config.authentication.email}:${this.config.authentication.apiToken}`
-		).toString("base64");
-
 		const method = requestConfig.method;
 		const url = new URL(`/wiki/${requestConfig.url}`, this.config.host);
 		let params = requestConfig.params;
@@ -73,7 +78,7 @@ export default class BaseClient {
 			...requestParams,
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Basic ${creds}`,
+				Authorization: this.authHeader(),
 			},
 			throw: false,
 		});
